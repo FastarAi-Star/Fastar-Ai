@@ -88,20 +88,42 @@
 
   </div>
 
-  <script>
-    function askAI() {
-      const question = document.getElementById("question").value;
+<script>
+  async function askAI() {
+    const input = document.querySelector("textarea");
+      const result = document.querySelector(".result");
 
-      if (!question.trim()) {
-        document.getElementById("result").innerText =
-          "पहले अपना सवाल लिखें।";
-        return;
-      }
+        const message = input.value.trim();
 
-      document.getElementById("result").innerText =
-        "Fastar AI जल्द ही आपके सवाल का जवाब देगा।";
-    }
-  </script>
+          if (!message) {
+              result.innerText = "Pehle apna sawal likhiye.";
+                  return;
+                    }
 
-</body>
-</html>
+                      result.innerText = "Fastar AI soch raha hai...";
+
+                        try {
+                            const response = await fetch("/api/chat", {
+                                  method: "POST",
+                                        headers: {
+                                                "Content-Type": "application/json"
+                                                      },
+                                                            body: JSON.stringify({
+                                                                    message: message
+                                                                          })
+                                                                              });
+
+                                                                                  const data = await response.json();
+
+                                                                                      if (!response.ok) {
+                                                                                            result.innerText = data.error || "Kuch error aa gaya.";
+                                                                                                  return;
+                                                                                                      }
+
+                                                                                                          result.innerText = data.reply;
+
+                                                                                                            } catch (error) {
+                                                                                                                result.innerText = "Server se connection nahi ho raha.";
+                                                                                                                  }
+                                                                                                                  }
+                                                                                                                  </script>
