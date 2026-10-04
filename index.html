@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fastar AI</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 25px 15px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .header p {
+      margin-top: 8px;
+      color: #d1d5db;
+    }
+
+    .box {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      padding: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-size: 16px;
+      resize: none;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      min-height: 80px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>⚡ Fastar AI</h1>
+    <p>Your Business AI Assistant</p>
+  </div>
+
+  <div class="box">
+
+    <textarea id="question"
+      placeholder="अपना सवाल यहाँ लिखें..."></textarea>
+
+    <button onclick="askAI()">ASK FASTAR AI</button>
+
+    <div class="result" id="result">
+      आपका AI जवाब यहाँ दिखाई देगा।
+    </div>
+
+  </div>
+
+  <script>
+    function askAI() {
+      const question = document.getElementById("question").value;
+
+      if (!question.trim()) {
+        document.getElementById("result").innerText =
+          "पहले अपना सवाल लिखें।";
+        return;
+      }
+
+      document.getElementById("result").innerText =
+        "Fastar AI जल्द ही आपके सवाल का जवाब देगा।";
+    }
+  </script>
+
+</body>
+</html>
