@@ -143,4 +143,13 @@ module.exports = async function handler(req, res) {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   });
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     };
+  } catch (error) {
+        console.error("Sham Fastar AI Server Error:", error);
+
+            return res.status(500).json({
+                  error:
+                          "Sham Fastar AI server error. Thodi der baad dobara try karein."
+                              });
+                                }
+                                };
 }
