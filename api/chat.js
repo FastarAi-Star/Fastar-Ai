@@ -1,55 +1,98 @@
-export default async function handler(req, res) {
-      if (req.method !== "POST") {
-          return res.status(405).json({
-                error: "Only POST is allowed"
-                    });
-                      }
+                                                                                                export default async function handler(req, res) {
+                                                                                                      if (req.method !== "POST") {
+                                                                                                          return res.status(405).json({
+                                                                                                                error: "Only POST is allowed"
+                                                                                                                    });
+                                                                                                                      }
 
-                        try {
-                            const { message } = req.body || {};
+                                                                                                                        try {
+                                                                                                                            const { message } = req.body || {};
 
-                                if (!message) {
-                                      return res.status(400).json({
-                                              error: "Message is required"
-                                                    });
-                                                        }
+                                                                                                                                if (!message || !message.trim()) {
+                                                                                                                                      return res.status(400).json({
+                                                                                                                                              error: "Message is required"
+                                                                                                                                                    });
+                                                                                                                                                        }
 
-                                                            const response = await fetch("https://api.openai.com/v1/responses", {
-                                                                  method: "POST",
-                                                                        headers: {
-                                                                                "Content-Type": "application/json",
-                                                                                        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-                                                                                              },
-                                                                                                    body: JSON.stringify({
-                                                                                                            model: "gpt-6-luna",
-                                                                                                                    input: message
-                                                                                                                          })
-                                                                                                                              });
+                                                                                                                                                            const response = await fetch("https://api.openai.com/v1/responses", {
+                                                                                                                                                                  method: "POST",
 
-                                                                                                                                  const data = await response.json();
+                                                                                                                                                                        headers: {
+                                                                                                                                                                                "Content-Type": "application/json",
+                                                                                                                                                                                        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+                                                                                                                                                                                              },
 
-                                                                                                                                      if (!response.ok) {
-                                                                                                                                            return res.status(response.status).json({
-                                                                                                                                                    error: data.error?.message || "OpenAI API error"
-                                                                                                                                                          });
-                                                                                                                                                              }
+                                                                                                                                                                                                    body: JSON.stringify({
+                                                                                                                                                                                                            model: "gpt-6-luna",
 
-                                                                                                                                                                  const reply =
-                                                                                                                                                                        data.output
-                                                                                                                                                                                ?.flatMap(item => item.content || [])
-                                                                                                                                                                                        ?.filter(item => item.type === "output_text")
-                                                                                                                                                                                                ?.map(item => item.text)
-                                                                                                                                                                                                        ?.join("\n")
-                                                                                                                                                                                                                ?.trim() || "No response received.";
+                                                                                                                                                                                                                    instructions: `
+                                                                                                                                                                                                                    You are Sham Fastar AI, a fast and helpful AI business assistant.
 
-                                                                                                                                                                                                                    return res.status(200).json({
-                                                                                                                                                                                                                          reply
-                                                                                                                                                                                                                              });
+                                                                                                                                                                                                                    Your job is to help users with:
+                                                                                                                                                                                                                    - Business
+                                                                                                                                                                                                                    - Meesho
+                                                                                                                                                                                                                    - Flipkart
+                                                                                                                                                                                                                    - Amazon
+                                                                                                                                                                                                                    - Shopify
+                                                                                                                                                                                                                    - Product listings
+                                                                                                                                                                                                                    - Product titles and descriptions
+                                                                                                                                                                                                                    - GST and HSN general guidance
+                                                                                                                                                                                                                    - Pricing and profit calculations
+                                                                                                                                                                                                                    - Marketing
+                                                                                                                                                                                                                    - Customer messages
+                                                                                                                                                                                                                    - E-commerce problems
+                                                                                                                                                                                                                    - General questions
 
-                                                                                                                                                                                                                                } catch (error) {
-                                                                                                                                                                                                                                    return res.status(500).json({
-                                                                                                                                                                                                                                          error: "Server error"
+                                                                                                                                                                                                                    Reply naturally in the same language as the user.
+                                                                                                                                                                                                                    If the user writes Hindi or Hinglish, reply in simple Hindi/Hinglish.
+                                                                                                                                                                                                                    Keep answers clear, practical and easy to understand.
+                                                                                                                                                                                                                    Do not unnecessarily give very long answers.
+                                                                                                                                                                                                                    Use bullet points when useful.
+                                                                                                                                                                                                                    For calculations, show the calculation clearly.
+                                                                                                                                                                                                                    Never claim to have performed an action that you did not actually perform.
+                                                                                                                                                                                                                    You are called Sham Fastar AI.
+                                                                                                                                                                                                                    `,
+
+                                                                                                                                                                                                                            input: message.trim(),
+
+                                                                                                                                                                                                                                    max_output_tokens: 800
+                                                                                                                                                                                                                                          })
                                                                                                                                                                                                                                               });
-                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                }
-}
+
+                                                                                                                                                                                                                                                  const data = await response.json();
+
+                                                                                                                                                                                                                                                      if (!response.ok) {
+                                                                                                                                                                                                                                                            return res.status(response.status).json({
+                                                                                                                                                                                                                                                                    error:
+                                                                                                                                                                                                                                                                              data?.error?.message ||
+                                                                                                                                                                                                                                                                                        "OpenAI API error"
+                                                                                                                                                                                                                                                                                              });
+                                                                                                                                                                                                                                                                                                  }
+
+                                                                                                                                                                                                                                                                                                      const reply =
+                                                                                                                                                                                                                                                                                                            data.output
+                                                                                                                                                                                                                                                                                                                    ?.flatMap(item => item.content || [])
+                                                                                                                                                                                                                                                                                                                            ?.filter(item => item.type === "output_text")
+                                                                                                                                                                                                                                                                                                                                    ?.map(item => item.text)
+                                                                                                                                                                                                                                                                                                                                            ?.join("\n")
+                                                                                                                                                                                                                                                                                                                                                    ?.trim();
+
+                                                                                                                                                                                                                                                                                                                                                        if (!reply) {
+                                                                                                                                                                                                                                                                                                                                                              return res.status(500).json({
+                                                                                                                                                                                                                                                                                                                                                                      error: "AI ne koi response nahi diya."
+                                                                                                                                                                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                                                                                                                                                                }
+
+                                                                                                                                                                                                                                                                                                                                                                                    return res.status(200).json({
+                                                                                                                                                                                                                                                                                                                                                                                          reply: reply
+                                                                                                                                                                                                                                                                                                                                                                                              });
+
+                                                                                                                                                                                                                                                                                                                                                                                                } catch (error) {
+                                                                                                                                                                                                                                                                                                                                                                                                    console.error("Sham Fastar AI Error:", error);
+
+                                                                                                                                                                                                                                                                                                                                                                                                        return res.status(500).json({
+                                                                                                                                                                                                                                                                                                                                                                                                              error: "Server error. Thodi der baad dobara try karein."
+                                                                                                                                                                                                                                                                                                                                                                                                                  });
+                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                }    
