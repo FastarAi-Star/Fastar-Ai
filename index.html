@@ -1,129 +1,257 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fastar AI</title>
+
+  <title>Sham Fastar AI – AI Assistant by Shamsher Alam</title>
+
+  <meta
+    name="description"
+    content="Sham Fastar AI is an intelligent AI assistant created by Shamsher Alam for business, e-commerce, technology and general questions."
+  >
+
+  <meta
+    name="keywords"
+    content="Sham Fastar AI, Shamsher Alam, AI assistant, business AI, e-commerce AI, Meesho AI, Flipkart AI"
+  >
+
+  <meta name="author" content="Shamsher Alam">
+
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Sham Fastar AI">
+  <meta
+    property="og:description"
+    content="AI assistant created by Shamsher Alam for business, e-commerce, technology and general questions."
+  >
+  <meta property="og:type" content="website">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Sham Fastar AI",
+    "description": "AI assistant created by Shamsher Alam for business, e-commerce, technology and general questions.",
+    "applicationCategory": "BusinessApplication",
+    "creator": {
+      "@type": "Person",
+      "name": "Shamsher Alam"
+    }
+  }
+  </script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f6f8;
+      color: #111827;
     }
 
-    .header {
-      background: #111827;
+    header {
+      background: #101828;
       color: white;
       text-align: center;
-      padding: 25px 15px;
+      padding: 42px 20px 36px;
     }
 
-    .header h1 {
-      margin: 0;
-      font-size: 32px;
+    .logo {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 8px;
     }
 
-    .header p {
-      margin-top: 8px;
-      color: #d1d5db;
+    .tagline {
+      font-size: 20px;
+      color: #d0d5dd;
     }
 
-    .box {
-      max-width: 600px;
-      margin: 30px auto;
-      padding: 20px;
+    .creator {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #98a2b3;
+    }
+
+    main {
+      width: 92%;
+      max-width: 800px;
+      margin: 35px auto;
     }
 
     textarea {
       width: 100%;
-      height: 140px;
-      padding: 15px;
-      box-sizing: border-box;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      font-size: 16px;
-      resize: none;
+      min-height: 180px;
+      padding: 20px;
+      font-size: 20px;
+      border: 1px solid #d0d5dd;
+      border-radius: 18px;
+      resize: vertical;
+      outline: none;
+      background: white;
+    }
+
+    textarea:focus {
+      border-color: #2563eb;
     }
 
     button {
       width: 100%;
-      margin-top: 15px;
-      padding: 15px;
+      margin-top: 18px;
+      padding: 19px;
       border: none;
-      border-radius: 10px;
+      border-radius: 16px;
       background: #2563eb;
       color: white;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 19px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    .result {
-      margin-top: 20px;
-      padding: 20px;
+    button:active {
+      transform: scale(0.99);
+    }
+
+    #result {
+      margin-top: 30px;
       background: white;
-      border-radius: 12px;
-      min-height: 80px;
+      border-radius: 18px;
+      padding: 25px;
+      min-height: 120px;
+      font-size: 19px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .about {
+      margin-top: 35px;
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      line-height: 1.7;
+    }
+
+    .about h2 {
+      margin-top: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #667085;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>⚡ Fastar AI</h1>
-    <p>Your Business AI Assistant</p>
-  </div>
+  <header>
+    <div class="logo">⚡ Sham Fastar AI</div>
 
-  <div class="box">
-
-    <textarea id="question"
-      placeholder="अपना सवाल यहाँ लिखें..."></textarea>
-
-    <button onclick="askAI()">ASK FASTAR AI</button>
-
-    <div class="result" id="result">
-      आपका AI जवाब यहाँ दिखाई देगा।
+    <div class="tagline">
+      Your Intelligent AI Assistant
     </div>
 
-  </div>
+    <div class="creator">
+      Created by Shamsher Alam
+    </div>
+  </header>
 
-<script>
-  async function askAI() {
-    const input = document.querySelector("textarea");
-      const result = document.querySelector(".result");
+  <main>
 
-        const message = input.value.trim();
+    <textarea
+      id="message"
+      placeholder="Ask Sham Fastar AI anything..."
+    ></textarea>
 
-          if (!message) {
-              result.innerText = "Pehle apna sawal likhiye.";
-                  return;
-                    }
+    <button onclick="askAI()">
+      ASK SHAM FASTAR AI
+    </button>
 
-                      result.innerText = "Fastar AI soch raha hai...";
+    <div id="result">
+      Sham Fastar AI is ready. Ask me anything.
+    </div>
 
-                        try {
-                            const response = await fetch("/api/chat", {
-                                  method: "POST",
-                                        headers: {
-                                                "Content-Type": "application/json"
-                                                      },
-                                                            body: JSON.stringify({
-                                                                    message: message
-                                                                          })
-                                                                              });
+    <section class="about">
+      <h2>About Sham Fastar AI</h2>
 
-                                                                                  const data = await response.json();
+      <p>
+        Sham Fastar AI is an intelligent AI assistant created by
+        <strong>Shamsher Alam</strong>.
+      </p>
 
-                                                                                      if (!response.ok) {
-                                                                                            result.innerText = data.error || "Kuch error aa gaya.";
-                                                                                                  return;
-                                                                                                      }
+      <p>
+        It is designed to help with business, e-commerce, technology,
+        product listings, online selling, calculations and general questions.
+      </p>
 
-                                                                                                          result.innerText = data.reply;
+      <p>
+        Sham Fastar AI can understand English, Hindi and Hinglish.
+      </p>
+    </section>
 
-                                                                                                            } catch (error) {
-                                                                                                                result.innerText = "Server se connection nahi ho raha.";
-                                                                                                                  }
-                                                                                                                  }
-                                                                                                                  </script>
+  </main>
+
+  <footer>
+    © 2026 Sham Fastar AI · Created by Shamsher Alam
+  </footer>
+
+  <script>
+    async function askAI() {
+
+      const messageBox = document.getElementById("message");
+      const result = document.getElementById("result");
+
+      const message = messageBox.value.trim();
+
+      if (!message) {
+        result.innerText = "Pehle apna sawal likhiye.";
+        return;
+      }
+
+      result.innerText = "Sham Fastar AI soch raha hai...";
+
+      try {
+
+        const response = await fetch("/api/chat", {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            message: message
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          result.innerText =
+            data.error || "Kuch error aa gaya.";
+          return;
+        }
+
+        result.innerText =
+          data.reply || "Koi response nahi mila.";
+
+      } catch (error) {
+
+        console.error(error);
+
+        result.innerText =
+          "Server se connection nahi ho raha.";
+      }
+    }
+  </script>
+
+</body>
+</html>
