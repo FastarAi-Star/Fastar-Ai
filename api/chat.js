@@ -1,155 +1,102 @@
+const OpenAI = require("openai");
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
 module.exports = async function handler(req, res) {
-      // Only POST requests are allowed
-        if (req.method !== "POST") {
-            return res.status(405).json({
-                  error: "Only POST is allowed"
-                      });
-                        }
+  if (req.method !== "POST") {
+    return res.status(405).json({
+      error: "Only POST is allowed"
+    });
+  }
 
-                          try {
-                              // Get user's message
-                                  const { message } = req.body || {};
+  try {
+    const body = req.body || {};
+    const message = body.message;
 
-                                      if (!message || !message.trim()) {
-                                            return res.status(400).json({
-                                                    error: "Message is required"
-                                                          });
-                                                              }
+    if (!message || !message.trim()) {
+      return res.status(400).json({
+        error: "Message is required"
+      });
+    }
 
-                                                                  // Check API key
-                                                                      if (!process.env.OPENAI_API_KEY) {
-                                                                            return res.status(500).json({
-                                                                                    error: "OPENAI_API_KEY is not configured in Vercel."
-                                                                                          });
-                                                                                              }
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({
+        error: "OPENAI_API_KEY is not configured in Vercel."
+      });
+    }
 
-                                                                                                  // Send request to OpenAI
-                                                                                                      const response = await fetch(
-                                                                                                            "https://api.openai.com/v1/responses",
-                                                                                                                  {
-                                                                                                                          method: "POST",
+    const response = await client.responses.create({
+      model: "gpt-6-luna",
 
-                                                                                                                                  headers: {
-                                                                                                                                            "Content-Type": "application/json",
-                                                                                                                                                      "Authorization": "Bearer " + process.env.OPENAI_API_KEY
-                                                                                                                                                              },
+      instructions: `
+You are Sham Fastar AI.
 
-                                                                                                                                                                      body: JSON.stringify({
-                                                                                                                                                                                model: "gpt-6-luna",
+You are an intelligent, friendly and helpful AI assistant.
 
-                                                                                                                                                                                          instructions: `
-                                                                                                                                                                                          You are Sham Fastar AI.
+Your creator is Shamsher Alam.
 
-                                                                                                                                                                                          You are a fast, friendly and intelligent AI assistant.
+If a user asks:
+"Who created Sham Fastar AI?"
+"Who made Sham Fastar AI?"
+or similar questions,
+answer clearly:
+"Sham Fastar AI was created by Shamsher Alam."
 
-                                                                                                                                                                                          Your main job is to help users with:
-                                                                                                                                                                                          - Business
-                                                                                                                                                                                          - Meesho
-                                                                                                                                                                                          - Flipkart
-                                                                                                                                                                                          - Amazon
-                                                                                                                                                                                          - Shopify
-                                                                                                                                                                                          - E-commerce
-                                                                                                                                                                                          - Product listing
-                                                                                                                                                                                          - Product titles
-                                                                                                                                                                                          - Product descriptions
-                                                                                                                                                                                          - GST and HSN general guidance
-                                                                                                                                                                                          - Pricing
-                                                                                                                                                                                          - Profit calculations
-                                                                                                                                                                                          - Marketing
-                                                                                                                                                                                          - Customer messages
-                                                                                                                                                                                          - Online selling
-                                                                                                                                                                                          - Technology
-                                                                                                                                                                                          - General questions
+About Sham Fastar AI:
+- It is an AI assistant project.
+- It is designed to help users with business, e-commerce, technology and general questions.
+- It can help with Meesho, Flipkart, Amazon, Shopify, product listings, titles, descriptions, GST/HSN general guidance, pricing, profit calculations, marketing and online selling.
 
-                                                                                                                                                                                          The user's name is Shamsher Alam when they provide or use that name.
+Language:
+- If the user writes Hindi or Hinglish, reply in simple Hindi/Hinglish.
+- If the user writes English, reply in English.
+- Understand normal conversational language.
 
-                                                                                                                                                                                          Always reply naturally and helpfully.
+Important:
+- Give useful, practical and honest answers.
+- Do not invent personal information about Shamsher Alam.
+- Only state information about Shamsher Alam that is provided in the conversation or available from reliable public web sources.
+- When current information is needed, use web search.
+- Clearly distinguish current/search-based information from general knowledge when useful.
+- Never claim you searched the web if you did not actually search.
+- Never claim to have performed an action that you did not perform.
+- For calculations, show the calculation clearly.
+- Keep normal answers reasonably concise.
+- Use bullet points when helpful.
 
-                                                                                                                                                                                          If the user writes in Hindi or Hinglish,
-                                                                                                                                                                                          reply in simple Hindi/Hinglish.
+Your name is Sham Fastar AI.
+`,
 
-                                                                                                                                                                                          If the user writes in English,
-                                                                                                                                                                                          reply in English.
+      tools: [
+        {
+          type: "web_search"
+        }
+      ],
 
-                                                                                                                                                                                          Keep answers clear, practical and easy to understand.
+      input: message.trim()
+    });
 
-                                                                                                                                                                                          Do not give unnecessarily long answers.
+    const reply = response.output_text;
 
-                                                                                                                                                                                          Use bullet points when useful.
+    if (!reply || !reply.trim()) {
+      return res.status(500).json({
+        error: "Sham Fastar AI ne koi response nahi diya."
+      });
+    }
 
-                                                                                                                                                                                          For calculations, show the calculation clearly.
+    return res.status(200).json({
+      reply: reply.trim()
+    });
 
-                                                                                                                                                                                          Never claim that you performed an action if you did not actually perform it.
-
-                                                                                                                                                                                          Your name is Sham Fastar AI.
-                                                                                                                                                                                          `,
-
-                                                                                                                                                                                                    input: message.trim(),
-
-                                                                                                                                                                                                              max_output_tokens: 800
-                                                                                                                                                                                                                      })
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                );
-
-                                                                                                                                                                                                                                    // Read OpenAI response
-                                                                                                                                                                                                                                        const data = await response.json();
-
-                                                                                                                                                                                                                                            // Handle OpenAI errors
-                                                                                                                                                                                                                                                if (!response.ok) {
-                                                                                                                                                                                                                                                      console.error("OpenAI API Error:", data);
-
-                                                                                                                                                                                                                                                            return res.status(response.status).json({
-                                                                                                                                                                                                                                                                    error:
-                                                                                                                                                                                                                                                                              data?.error?.message ||
-                                                                                                                                                                                                                                                                                        "OpenAI API error"
-                                                                                                                                                                                                                                                                                              });
-                                                                                                                                                                                                                                                                                                  }
-
-                                                                                                                                                                                                                                                                                                      // Extract text from Responses API
-                                                                                                                                                                                                                                                                                                          const reply =
-                                                                                                                                                                                                                                                                                                                data.output
-                                                                                                                                                                                                                                                                                                                        ?.flatMap(function (item) {
-                                                                                                                                                                                                                                                                                                                                  return item.content || [];
-                                                                                                                                                                                                                                                                                                                                          })
-                                                                                                                                                                                                                                                                                                                                                  ?.filter(function (item) {
-                                                                                                                                                                                                                                                                                                                                                            return item.type === "output_text";
-                                                                                                                                                                                                                                                                                                                                                                    })
-                                                                                                                                                                                                                                                                                                                                                                            ?.map(function (item) {
-                                                                                                                                                                                                                                                                                                                                                                                      return item.text;
-                                                                                                                                                                                                                                                                                                                                                                                              })
-                                                                                                                                                                                                                                                                                                                                                                                                      ?.join("\n")
-                                                                                                                                                                                                                                                                                                                                                                                                              ?.trim();
-
-                                                                                                                                                                                                                                                                                                                                                                                                                  // No response received
-                                                                                                                                                                                                                                                                                                                                                                                                                      if (!reply) {
-                                                                                                                                                                                                                                                                                                                                                                                                                            console.error("No AI response:", data);
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                  return res.status(500).json({
-                                                                                                                                                                                                                                                                                                                                                                                                                                          error: "Sham Fastar AI ne koi response nahi diya."
-                                                                                                                                                                                                                                                                                                                                                                                                                                                });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        // Send answer to website
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            return res.status(200).json({
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                  reply: reply
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      });
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } catch (error) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            console.error("Sham Fastar AI Server Error:", error);
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                return res.status(500).json({
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      error:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "Sham Fastar AI server error. Thodi der baad dobara try karein."
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  });
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    };
   } catch (error) {
-        console.error("Sham Fastar AI Server Error:", error);
+    console.error("Sham Fastar AI Error:", error);
 
-            return res.status(500).json({
-                  error:
-                          "Sham Fastar AI server error. Thodi der baad dobara try karein."
-                              });
-                                }
-                                };
-}
+    return res.status(500).json({
+      error:
+        error?.message ||
+        "Sham Fastar AI server error. Thodi der baad dobara try karein."
+    });
+  }
+};
