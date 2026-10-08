@@ -1,0 +1,13 @@
+{
+  "name": "sham-fastar-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sham Fastar AI - AI assistant created by Shamsher Alam",
+  "main": "api/chat.js",
+  "scripts": {
+    "start": "node api/chat.js"
+  },
+  "dependencies": {
+    "openai": "latest"
+  }
+}
