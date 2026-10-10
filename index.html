@@ -5,40 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101828">
-  <meta name="description" content="Sham Fastar AI - सवाल पूछें, फोटो समझें, फोटो एडिट करें और नई इमेज बनाएँ।">
-  <title>Sham Fastar AI - AI Assistant</title>
-
+  <meta name="description" content="Sham Fastar AI se sawal poochhein aur photo ke baare mein jaankari paayein.">
+  <title>Sham Fastar AI - सवाल और फोटो की जानकारी</title>
   <style>
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f3f5f9;
       color: #172033;
     }
-
     header {
       background: #101828;
       color: white;
       text-align: center;
       padding: 28px 16px;
     }
-
-    header h1 {
-      font-size: clamp(28px, 6vw, 42px);
-      margin: 0 0 10px;
-    }
-
+    header h1 { margin: 0 0 10px; font-size: 30px; }
     header p { margin: 8px 0; color: #d0d5dd; }
     header small { color: #98a2b3; }
-
-    main {
-      width: 92%;
-      max-width: 760px;
-      margin: 24px auto;
-    }
-
+    main { width: 92%; max-width: 760px; margin: 24px auto; }
     .panel {
       background: white;
       padding: 22px;
@@ -46,16 +32,9 @@
       box-shadow: 0 5px 20px #10182812;
       margin-bottom: 22px;
     }
-
     h2 { margin-top: 0; }
-
-    label {
-      display: block;
-      margin: 16px 0 8px;
-      font-weight: 700;
-    }
-
-    select, textarea, input[type="file"] {
+    label { display: block; margin: 16px 0 8px; font-weight: 700; }
+    textarea, input[type="file"] {
       width: 100%;
       padding: 13px;
       border: 1px solid #d0d5dd;
@@ -63,18 +42,8 @@
       background: white;
       font: inherit;
     }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .hint {
-      color: #667085;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
+    textarea { min-height: 120px; resize: vertical; }
+    .hint { color: #667085; font-size: 13px; line-height: 1.5; }
     button {
       width: 100%;
       padding: 15px;
@@ -87,182 +56,141 @@
       font-weight: 700;
       cursor: pointer;
     }
-
-    button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    #preview, #resultImage {
+    button:disabled { opacity: .6; cursor: wait; }
+    #preview {
       display: none;
-      width: 100%;
-      max-height: 440px;
+      max-width: 100%;
+      max-height: 360px;
       object-fit: contain;
       margin-top: 14px;
       border-radius: 12px;
       background: #f2f4f7;
     }
-
-    #resultText {
+    #result {
       white-space: pre-wrap;
       overflow-wrap: anywhere;
-      line-height: 1.6;
+      line-height: 1.7;
     }
-
-    .status { color: #475467; }
-
-    footer {
-      text-align: center;
-      color: #667085;
-      padding: 12px 16px 28px;
-      font-size: 13px;
-    }
+    footer { text-align: center; padding: 20px; color: #667085; font-size: 13px; }
   </style>
 </head>
-
 <body>
   <header>
     <h1>⚡ Sham Fastar AI</h1>
-    <p>Your Intelligent AI Assistant</p>
+    <p>आपका अपना AI सहायक</p>
     <small>Created by Shamsher Alam</small>
   </header>
 
   <main>
     <section class="panel">
-      <h2>Ask Sham Fastar AI</h2>
-
-      <label for="mode">आप क्या करना चाहते हैं?</label>
-      <select id="mode">
-        <option value="chat">सामान्य सवाल-जवाब</option>
-        <option value="ask">फोटो के बारे में पूछें</option>
-        <option value="edit">अपनी फोटो एडिट करें</option>
-        <option value="generate">नई फोटो बनाएँ</option>
-      </select>
+      <h2>Sham Fastar AI से पूछें</h2>
+      <p>कोई भी सवाल पूछें या फोटो भेजकर उसके बारे में जानकारी लें।</p>
 
       <label for="photo">फोटो अपलोड करें (ज़रूरी नहीं)</label>
-      <input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
-      <p class="hint">JPG, PNG या WebP चुनें। बेहतर परिणाम के लिए फोटो 3 MB से छोटी रखें।</p>
-      <img id="preview" alt="अपलोड की गई फोटो का प्रीव्यू">
+      <input id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+      <p class="hint">JPG, PNG या WebP फोटो चुनें। फोटो 3 MB से छोटी रखें।</p>
+      <img id="preview" alt="आपकी चुनी हुई फोटो">
 
-      <label for="prompt">अपना सवाल या निर्देश लिखें</label>
-      <textarea id="prompt" placeholder="उदाहरण: इस फोटो का बैकग्राउंड आसमानी नीला कर दो।"></textarea>
+      <label for="question">अपना सवाल लिखें</label>
+      <textarea id="question" placeholder="जैसे: इस फोटो में क्या है? या अपना कोई भी सवाल पूछें..."></textarea>
 
-      <button id="send" type="button">Send to Sham Fastar AI</button>
-      <p id="status" class="status" role="status" aria-live="polite"></p>
-    </section>
-
-    <section class="panel" id="resultPanel">
-      <h2>AI Result</h2>
-      <p id="resultText">Sham Fastar AI तैयार है। अपना सवाल पूछें।</p>
-      <img id="resultImage" alt="AI द्वारा बनाई गई या एडिट की गई फोटो">
+      <button id="send">Sham Fastar AI से जवाब लें</button>
+      <p id="status" class="hint" role="status">तैयार हूँ। अपना सवाल लिखें।</p>
     </section>
 
     <section class="panel">
-      <h2>About Sham Fastar AI</h2>
-      <p>अपने सवाल पूछें, फोटो समझें, फोटो एडिट करें और नई इमेज बनाने की कोशिश करें।</p>
+      <h2>AI का जवाब</h2>
+      <div id="result">आपका जवाब यहाँ दिखाई देगा।</div>
+    </section>
+
+    <section class="panel">
+      <h2>Sham Fastar AI के बारे में</h2>
+      <p>यहाँ आप सामान्य सवाल पूछ सकते हैं और अपलोड की गई फोटो में दिखाई देने वाली चीज़ों के बारे में जानकारी ले सकते हैं।</p>
+      <p class="hint">फोटो एडिट करने और नई तस्वीर बनाने की सुविधा इस वेबसाइट में शामिल नहीं है।</p>
     </section>
   </main>
 
-  <footer>© Sham Fastar AI · Created by Shamsher Alam</footer>
+  <footer>Sham Fastar AI · Created by Shamsher Alam</footer>
 
   <script>
-    const modeInput = document.getElementById("mode");
     const photoInput = document.getElementById("photo");
-    const promptInput = document.getElementById("prompt");
+    const questionInput = document.getElementById("question");
     const preview = document.getElementById("preview");
-    const resultImage = document.getElementById("resultImage");
-    const resultText = document.getElementById("resultText");
-    const status = document.getElementById("status");
     const sendButton = document.getElementById("send");
+    const statusText = document.getElementById("status");
+    const resultBox = document.getElementById("result");
 
-    let imageData = "";
+    let selectedImage = "";
 
     photoInput.addEventListener("change", () => {
-      const file = photoInput.files[0];
-      imageData = "";
+      selectedImage = "";
       preview.style.display = "none";
 
+      const file = photoInput.files[0];
       if (!file) return;
 
       if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-        status.textContent = "कृपया JPG, PNG या WebP फोटो चुनें।";
+        statusText.textContent = "JPG, PNG या WebP फोटो चुनें।";
         photoInput.value = "";
         return;
       }
 
       if (file.size > 3 * 1024 * 1024) {
-        status.textContent = "फोटो 3 MB से छोटी चुनें।";
+        statusText.textContent = "फोटो 3 MB से छोटी रखें।";
         photoInput.value = "";
         return;
       }
 
       const reader = new FileReader();
-
       reader.onload = () => {
-        imageData = reader.result;
-        preview.src = imageData;
+        selectedImage = reader.result;
+        preview.src = selectedImage;
         preview.style.display = "block";
-        status.textContent = "फोटो अपलोड के लिए तैयार है।";
+        statusText.textContent = "फोटो तैयार है। अब सवाल पूछ सकते हैं।";
       };
-
       reader.onerror = () => {
-        status.textContent = "फोटो पढ़ी नहीं जा सकी। दोबारा चुनें।";
+        statusText.textContent = "फोटो पढ़ी नहीं जा सकी। दोबारा चुनें।";
       };
-
       reader.readAsDataURL(file);
     });
 
     sendButton.addEventListener("click", async () => {
-      const mode = modeInput.value;
-      const prompt = promptInput.value.trim();
+      const message = questionInput.value.trim();
 
-      if ((mode === "ask" || mode === "edit") && !imageData) {
-        status.textContent = "पहले अपनी फोटो अपलोड करें।";
-        return;
-      }
-
-      if (!prompt && mode !== "generate") {
-        status.textContent = "पहले अपना सवाल या निर्देश लिखें।";
+      if (!message && !selectedImage) {
+        statusText.textContent = "पहले सवाल लिखें या फोटो अपलोड करें।";
         return;
       }
 
       sendButton.disabled = true;
-      status.textContent = "AI काम कर रहा है। कृपया प्रतीक्षा करें...";
-      resultText.textContent = "";
-      resultImage.style.display = "none";
-      resultImage.removeAttribute("src");
+      statusText.textContent = "जवाब तैयार हो रहा है...";
+      resultBox.textContent = "";
 
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: prompt || "Create a beautiful image.",
-            mode: mode,
-            image: imageData || ""
+            message,
+            image: selectedImage
           })
         });
 
         const data = await response.json();
+        const reply = data.reply || data.error ||
+          "जवाब नहीं मिल सका।";
+
+        resultBox.textContent = reply;
 
         if (!response.ok) {
-          throw new Error(data.error || "Request पूरा नहीं हुआ।");
+          statusText.textContent = "अनुरोध पूरा नहीं हुआ। नीचे दिया जवाब पढ़ें।";
+        } else {
+          statusText.textContent = "जवाब मिल गया।";
         }
-
-        resultText.textContent = data.reply || "AI से जवाब मिला।";
-
-        if (data.image) {
-          resultImage.src = data.image;
-          resultImage.style.display = "block";
-        }
-
-        status.textContent = data.image
-          ? "फोटो तैयार है!"
-          : "जवाब मिल गया।";
       } catch (error) {
-        resultText.textContent = "माफ़ कीजिए, अनुरोध पूरा नहीं हुआ।";
-        status.textContent = error.message ||
-          "नेटवर्क या API में समस्या है।";
+        resultBox.textContent =
+          "सर्वर से संपर्क नहीं हो सका। इंटरनेट और Vercel deployment जाँचें।";
+        statusText.textContent = "अनुरोध विफल हुआ।";
       } finally {
         sendButton.disabled = false;
       }
