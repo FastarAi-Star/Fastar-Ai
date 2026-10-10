@@ -3,61 +3,96 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sham Fastar AI – AI Assistant by Shamsher Alam</title>
-  <meta name="google-site-verification" content="jXZ898ncOsYT3MVDVg30ngW451g2mkc-Zherg5m_Qqs">
-  <meta name="description" content="Sham Fastar AI: Ask questions, understand photos, edit images and create new images with AI.">
-  <meta name="author" content="Shamsher Alam">
-  <meta name="robots" content="index, follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101828">
+  <meta name="description" content="Sham Fastar AI - सवाल पूछें, फोटो समझें, फोटो एडिट करें और नई इमेज बनाएँ।">
+  <title>Sham Fastar AI - AI Assistant</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f3f5f9;
       color: #172033;
     }
+
     header {
       background: #101828;
       color: white;
       text-align: center;
-      padding: 30px 15px;
+      padding: 28px 16px;
     }
-    .logo { font-size: clamp(27px, 6vw, 42px); font-weight: 800; }
-    .tagline { margin-top: 10px; color: #d0d5dd; }
-    .creator { margin-top: 8px; color: #98a2b3; font-size: 14px; }
-    main { width: 92%; max-width: 760px; margin: 24px auto; }
-    .panel, .about {
+
+    header h1 {
+      font-size: clamp(28px, 6vw, 42px);
+      margin: 0 0 10px;
+    }
+
+    header p { margin: 8px 0; color: #d0d5dd; }
+    header small { color: #98a2b3; }
+
+    main {
+      width: 92%;
+      max-width: 760px;
+      margin: 24px auto;
+    }
+
+    .panel {
       background: white;
-      padding: 20px;
-      border-radius: 18px;
-      box-shadow: 0 3px 14px #1018280d;
-      margin-bottom: 20px;
+      padding: 22px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px #10182812;
+      margin-bottom: 22px;
     }
-    label { display: block; font-weight: 700; margin: 14px 0 8px; }
+
+    h2 { margin-top: 0; }
+
+    label {
+      display: block;
+      margin: 16px 0 8px;
+      font-weight: 700;
+    }
+
     select, textarea, input[type="file"] {
       width: 100%;
       padding: 13px;
       border: 1px solid #d0d5dd;
-      border-radius: 12px;
+      border-radius: 10px;
       background: white;
-      font-size: 16px;
+      font: inherit;
     }
-    textarea { min-height: 120px; resize: vertical; }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .hint {
+      color: #667085;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     button {
       width: 100%;
       padding: 15px;
-      margin-top: 14px;
+      margin-top: 16px;
       border: 0;
-      border-radius: 12px;
+      border-radius: 11px;
       background: #2563eb;
       color: white;
       font-size: 17px;
       font-weight: 700;
       cursor: pointer;
     }
-    button:disabled { opacity: .6; }
-    .hint { color: #667085; font-size: 13px; line-height: 1.5; }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
     #preview, #resultImage {
       display: none;
       width: 100%;
@@ -67,147 +102,171 @@
       border-radius: 12px;
       background: #f2f4f7;
     }
-    #result {
+
+    #resultText {
       white-space: pre-wrap;
-      line-height: 1.6;
       overflow-wrap: anywhere;
+      line-height: 1.6;
     }
-    footer { text-align: center; padding: 24px 12px; color: #667085; font-size: 13px; }
+
+    .status { color: #475467; }
+
+    footer {
+      text-align: center;
+      color: #667085;
+      padding: 12px 16px 28px;
+      font-size: 13px;
+    }
   </style>
 </head>
+
 <body>
   <header>
-    <div class="logo">⚡ Sham Fastar AI</div>
-    <div class="tagline">Your Intelligent AI Assistant</div>
-    <div class="creator">Created by Shamsher Alam</div>
+    <h1>⚡ Sham Fastar AI</h1>
+    <p>Your Intelligent AI Assistant</p>
+    <small>Created by Shamsher Alam</small>
   </header>
 
   <main>
     <section class="panel">
       <h2>Ask Sham Fastar AI</h2>
-      <label for="mode">Choose what you want to do</label>
+
+      <label for="mode">आप क्या करना चाहते हैं?</label>
       <select id="mode">
-        <option value="chat">Normal question / सामान्य सवाल</option>
-        <option value="ask">Ask about a photo / फोटो के बारे में पूछें</option>
-        <option value="edit">Edit my photo / फोटो एडिट करें</option>
-        <option value="generate">Create a new image / नई फोटो बनाएँ</option>
+        <option value="chat">सामान्य सवाल-जवाब</option>
+        <option value="ask">फोटो के बारे में पूछें</option>
+        <option value="edit">अपनी फोटो एडिट करें</option>
+        <option value="generate">नई फोटो बनाएँ</option>
       </select>
 
-      <label for="photo">Upload a photo (optional)</label>
+      <label for="photo">फोटो अपलोड करें (ज़रूरी नहीं)</label>
       <input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
-      <p class="hint">JPG, PNG या WebP फोटो चुनें। बेहतर परिणाम के लिए फोटो 2.5 MB से छोटी रखें।</p>
-      <img id="preview" alt="Uploaded photo preview">
+      <p class="hint">JPG, PNG या WebP चुनें। बेहतर परिणाम के लिए फोटो 3 MB से छोटी रखें।</p>
+      <img id="preview" alt="अपलोड की गई फोटो का प्रीव्यू">
 
-      <label for="message">Your question or instruction</label>
-      <textarea id="message" placeholder="अपना सवाल लिखें... उदाहरण: इस फोटो में क्या है? या इसका बैकग्राउंड सफेद कर दो।"></textarea>
+      <label for="prompt">अपना सवाल या निर्देश लिखें</label>
+      <textarea id="prompt" placeholder="उदाहरण: इस फोटो का बैकग्राउंड आसमानी नीला कर दो।"></textarea>
 
-      <button id="send" type="button" onclick="askAI()">Send to Sham Fastar AI</button>
+      <button id="send" type="button">Send to Sham Fastar AI</button>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel" id="resultPanel">
+      <h2>AI Result</h2>
+      <p id="resultText">Sham Fastar AI तैयार है। अपना सवाल पूछें।</p>
+      <img id="resultImage" alt="AI द्वारा बनाई गई या एडिट की गई फोटो">
     </section>
 
     <section class="panel">
-      <h2>AI Result</h2>
-      <div id="result" role="status">Sham Fastar AI is ready. अपना सवाल लिखें या फोटो चुनें।</div>
-      <img id="resultImage" alt="AI generated or edited image">
-    </section>
-
-    <section class="about">
       <h2>About Sham Fastar AI</h2>
-      <p>Sham Fastar AI, Shamsher Alam द्वारा बनाया गया AI assistant है। यह सामान्य सवालों, बिज़नेस, ई-कॉमर्स और फोटो से जुड़े कामों में मदद करने के लिए बनाया गया है।</p>
-      <p>फोटो बनाने और एडिट करने के लिए OpenAI API की image-generation सुविधा तथा सक्रिय API billing/credits की आवश्यकता हो सकती है।</p>
+      <p>अपने सवाल पूछें, फोटो समझें, फोटो एडिट करें और नई इमेज बनाने की कोशिश करें।</p>
     </section>
   </main>
 
-  <footer>© 2026 Sham Fastar AI · Created by Shamsher Alam</footer>
+  <footer>© Sham Fastar AI · Created by Shamsher Alam</footer>
 
   <script>
+    const modeInput = document.getElementById("mode");
     const photoInput = document.getElementById("photo");
+    const promptInput = document.getElementById("prompt");
     const preview = document.getElementById("preview");
     const resultImage = document.getElementById("resultImage");
-    let selectedImage = "";
+    const resultText = document.getElementById("resultText");
+    const status = document.getElementById("status");
+    const sendButton = document.getElementById("send");
+
+    let imageData = "";
 
     photoInput.addEventListener("change", () => {
       const file = photoInput.files[0];
-      selectedImage = "";
+      imageData = "";
       preview.style.display = "none";
 
       if (!file) return;
 
       if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-        alert("JPG, PNG या WebP फोटो चुनें।");
+        status.textContent = "कृपया JPG, PNG या WebP फोटो चुनें।";
         photoInput.value = "";
         return;
       }
 
-      if (file.size > 2.5 * 1024 * 1024) {
-        alert("कृपया 2.5 MB से छोटी फोटो चुनें।");
+      if (file.size > 3 * 1024 * 1024) {
+        status.textContent = "फोटो 3 MB से छोटी चुनें।";
         photoInput.value = "";
         return;
       }
 
       const reader = new FileReader();
-      reader.onload = () => {
-        selectedImage = reader.result;
-        preview.src = selectedImage;
-        preview.style.display = "block";
 
-        if (document.getElementById("mode").value === "chat") {
-          document.getElementById("mode").value = "ask";
-        }
+      reader.onload = () => {
+        imageData = reader.result;
+        preview.src = imageData;
+        preview.style.display = "block";
+        status.textContent = "फोटो अपलोड के लिए तैयार है।";
       };
+
+      reader.onerror = () => {
+        status.textContent = "फोटो पढ़ी नहीं जा सकी। दोबारा चुनें।";
+      };
+
       reader.readAsDataURL(file);
     });
 
-    async function askAI() {
-      const message = document.getElementById("message").value.trim();
-      const mode = document.getElementById("mode").value;
-      const result = document.getElementById("result");
-      const send = document.getElementById("send");
+    sendButton.addEventListener("click", async () => {
+      const mode = modeInput.value;
+      const prompt = promptInput.value.trim();
 
-      if (!message && mode !== "generate") {
-        result.innerText = "पहले अपना सवाल या निर्देश लिखें।";
+      if ((mode === "ask" || mode === "edit") && !imageData) {
+        status.textContent = "पहले अपनी फोटो अपलोड करें।";
         return;
       }
 
-      if (mode === "edit" && !selectedImage) {
-        result.innerText = "फोटो एडिट करने के लिए पहले फोटो अपलोड करें।";
+      if (!prompt && mode !== "generate") {
+        status.textContent = "पहले अपना सवाल या निर्देश लिखें।";
         return;
       }
 
-      result.innerText = "Sham Fastar AI काम कर रहा है... कृपया इंतज़ार करें।";
+      sendButton.disabled = true;
+      status.textContent = "AI काम कर रहा है। कृपया प्रतीक्षा करें...";
+      resultText.textContent = "";
       resultImage.style.display = "none";
-      send.disabled = true;
+      resultImage.removeAttribute("src");
 
       try {
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message,
-            mode,
-            image: selectedImage
+            message: prompt || "Create a beautiful image.",
+            mode: mode,
+            image: imageData || ""
           })
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-          result.innerText = data.error || "कुछ समस्या आई। दोबारा कोशिश करें।";
-          return;
+          throw new Error(data.error || "Request पूरा नहीं हुआ।");
         }
 
-        result.innerText = data.reply || "काम पूरा हुआ।";
+        resultText.textContent = data.reply || "AI से जवाब मिला।";
 
         if (data.image) {
           resultImage.src = data.image;
           resultImage.style.display = "block";
         }
+
+        status.textContent = data.image
+          ? "फोटो तैयार है!"
+          : "जवाब मिल गया।";
       } catch (error) {
-        console.error(error);
-        result.innerText = "Server से कनेक्शन नहीं हो रहा। थोड़ी देर बाद कोशिश करें।";
+        resultText.textContent = "माफ़ कीजिए, अनुरोध पूरा नहीं हुआ।";
+        status.textContent = error.message ||
+          "नेटवर्क या API में समस्या है।";
       } finally {
-        send.disabled = false;
+        sendButton.disabled = false;
       }
-    }
+    });
   </script>
 </body>
 </html>
